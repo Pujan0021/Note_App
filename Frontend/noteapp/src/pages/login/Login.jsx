@@ -13,7 +13,7 @@ const Login = () => {
         { email, password },
         { withCredentials: true }
       );
-      console.log(response);
+      // console.log(response);
       if (response.data.success) {
         navigate("/");
       }
