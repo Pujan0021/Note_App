@@ -3,10 +3,13 @@ const router = express.Router();
 const User = require("../models/User");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+require("dotenv").config();
+
 
 // REGISTER
 router.post("/register", async (req, res) => {
     try {
+
         const { name, email, password } = req.body;
 
         if (!email || !password) {
@@ -24,14 +27,6 @@ router.post("/register", async (req, res) => {
         const newUser = new User({ name, email, password: hashedPassword });
         await newUser.save();
 
-        const token = jwt.sign({ id: newUser._id }, "ThisIsaSecret", { expiresIn: "5h" });
-
-        return res.status(200).json({
-            success: true,
-            token,
-            name: newUser.name,
-            message: "Account Created Successfully"
-        });
     } catch (error) {
         console.error(error);
         return res.status(500).json({ success: false, message: "Failed creating an account!" });
@@ -41,6 +36,7 @@ router.post("/register", async (req, res) => {
 // LOGIN
 router.post("/login", async (req, res) => {
     try {
+        const JWT_SECRET = process.env.JWT_SECRET;
         console.log("LogIn Credits:", req.body)
         const { email, password } = req.body;
 
@@ -58,7 +54,7 @@ router.post("/login", async (req, res) => {
             return res.status(400).json({ success: false, message: "Wrong Credentials" });
         }
 
-        const token = jwt.sign({ id: user._id }, "ThisIsaSecret", { expiresIn: "5h" });
+        const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "5h" });
 
         return res.status(200).json({
             success: true,
