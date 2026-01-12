@@ -1,19 +1,31 @@
 import React, { useState } from "react";
-
+import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-    } catch (error) {}
+      const response = await axios.post(
+        "http://localhost:3000/api/auth/register",
+        { name, email, password }
+      );
+      console.log(response);
+      if (response.data.success) {
+        navigate("/login");
+      }
+    } catch (error) {
+      console.log(error, "Error Occcured");
+    }
   };
   return (
     <div className="flex justify-center items-center min-h-screen ">
       <div className="p-5 rounded-[5px] border border-gray-200 bg-white shadow-sm w-80 ">
-        <form className="p-2">
+        <form className="p-2" onSubmit={handleSubmit}>
           <h2 className="font-bold text-gray-500 text-xl text-center">
             SignUp
           </h2>
@@ -58,14 +70,16 @@ const Signup = () => {
           </div>
           <div className="mt-4 text-center text-white">
             <button
-              onClick={handleSubmit}
+              type="submit"
               className="w-full bg-gray-500 rounded-[3px] p-2 cursor-pointer"
             >
               SignUp
             </button>
           </div>
           <div className="pt-2 text-center text-[16px]">
-            <p>Already Have Account? Login</p>
+            <p>
+              Already Have Account? <Link to="/login">LogIn</Link>
+            </p>
           </div>
         </form>
       </div>
