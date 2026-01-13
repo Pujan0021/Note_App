@@ -1,14 +1,16 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useAuth } from "../context/ContextProvider";
 
 const Navbar = () => {
+  const { user, logOut } = useAuth();
   return (
-    <nav className="bg-white shadow-md">
+    <nav className="bg-gray-700 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           {/* Left side - Logo */}
           <div className="flex items-center">
-            <span className="text-xl font-bold text-blue-600">Note_Loop</span>
+            <span className=" md:text-2xl font-bold text-white">Note_Loop</span>
           </div>
 
           {/* Middle - Search bar */}
@@ -17,22 +19,49 @@ const Navbar = () => {
               <input
                 type="text"
                 placeholder="Search..."
-                className="w-full px-4 py-2 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className=" w-full md:w-80 px-2 py-2 
+                bg-white
+                rounded-md border border-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
           </div>
 
           {/* Right side - Links */}
-          <div className="flex items-center space-x-4">
-            <Link to="/login" className="text-gray-700 hover:text-blue-600">
-              Login
-            </Link>
-            <Link to="/register" className="text-gray-700 hover:text-blue-600">
-              Signup
-            </Link>
-            <Link to="/logout" className="text-gray-700 hover:text-blue-600">
-              Logout
-            </Link>
+          <div className="flex md:text-xl items-center space-x-6">
+            {!user ? (
+              <>
+                <Link
+                  to="/login"
+                  className="text-white hover:text-blue-300 transition-transform hover:scale-105"
+                >
+                  Login
+                </Link>
+                <Link
+                  to="/register"
+                  className="text-white hover:text-blue-300 transition-transform hover:scale-105"
+                >
+                  Signup
+                </Link>
+              </>
+            ) : (
+              <>
+                <div className="md:text-xl text-white  transition-transform hover:scale-105">
+                  {user.name}
+                </div>
+
+                <Link
+                  to="/"
+                  className="text-white hover:text-blue-300 transition-transform hover:scale-105"
+                >
+                  <button
+                    onClick={logOut}
+                    className="bg-amber-700 p-1.5 rounded-sm w-25 text-white cursor-pointer "
+                  >
+                    Logout
+                  </button>
+                </Link>
+              </>
+            )}
           </div>
         </div>
       </div>
