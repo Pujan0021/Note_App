@@ -26,6 +26,10 @@ router.post("/register", async (req, res) => {
 
         const newUser = new User({ name, email, password: hashedPassword });
         await newUser.save();
+        return res.status(200).json({
+            success: true,
+            message: "User created Successfully"
+        });
 
     } catch (error) {
         console.error(error);
@@ -55,13 +59,14 @@ router.post("/login", async (req, res) => {
         }
 
         const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "5h" });
-        res.cookie("jwt", token, {
+        console.log("JWT token: ", token);
+        res.cookie("token", token, {
             httpOnly: true,
-            secure: true,
+            secure: process.env.NODE_ENV === "production",
             sameSite: "strict",
             maxAge: 5 * 60 * 60 * 1000 // 5 hrs
         });
-        console.log(res.cookie.jwt)
+
         return res.status(200).json({
             success: true,
             token,
