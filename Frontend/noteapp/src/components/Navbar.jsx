@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { useAuth } from "../context/ContextProvider";
 
-const Navbar = () => {
+const Navbar = ({ query, setQuery }) => {
   const { user, logOut } = useAuth();
+
   return (
     <nav className="bg-gray-700 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -18,7 +19,9 @@ const Navbar = () => {
             <div className="w-full max-w-lg">
               <input
                 type="text"
+                value={query}
                 placeholder="Search..."
+                onChange={(e) => setQuery(e.target.value)}
                 className=" w-full md:w-80 px-2 py-2 
                 bg-white
                 rounded-md border border-white focus:outline-none focus:ring-2 focus:ring-blue-500"
