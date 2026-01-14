@@ -1,7 +1,10 @@
 import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/ContextProvider";
+import toast from "react-hot-toast";
 const Login = () => {
+  const { logIn } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -15,10 +18,14 @@ const Login = () => {
       );
       // console.log(response);
       if (response.data.success) {
+        logIn(response.data.user);
+        console.log(response.data.user);
         navigate("/");
+        toast.success("Login successfully.");
       }
     } catch (error) {
       console.log("LogIn Failed !", error.message);
+      toast.error("Incorrect Login Credentials");
     }
   };
   return (
