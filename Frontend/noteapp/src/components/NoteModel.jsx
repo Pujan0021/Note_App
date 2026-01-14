@@ -9,7 +9,7 @@ const NoteModal = ({ closeModal, addNote }) => {
     addNote(title, description);
   };
   return (
-    <div className="max-w-md mx-auto  bg-white shadow-md rounded-lg p-6 mt-20 backdrop-blur-md">
+    <div className="max-w-md mx-auto w-80 bg-white shadow-md rounded-lg p-6 mt-20 backdrop-blur-md">
       <h2 className="text-2xl font-bold text-gray-800 mb-4 ">Add New Note</h2>
 
       <form className="space-y-4" onSubmit={handleSubmit}>
