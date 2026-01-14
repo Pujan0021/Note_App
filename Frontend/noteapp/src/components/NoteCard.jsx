@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { FaEdit, FaTrash } from "react-icons/fa";
 
 const NoteCard = ({ note, onUpdate, onDelete }) => {
   const [isEditing, setIsEditing] = useState(false);
@@ -11,7 +12,7 @@ const NoteCard = ({ note, onUpdate, onDelete }) => {
   };
 
   return (
-    <div className="w-64   rounded-md shadow-xl p-4 bg-white">
+    <div className="w-64 rounded-md shadow-xl p-4 bg-white">
       {isEditing ? (
         <div>
           <input
@@ -49,13 +50,13 @@ const NoteCard = ({ note, onUpdate, onDelete }) => {
               onClick={() => setIsEditing(true)}
               className="bg-blue-500 text-white px-3 py-1 rounded"
             >
-              Edit
+              <FaEdit />
             </button>
             <button
-              onClick={() => onDelete(note.id)}
+              onClick={() => onDelete(note._id)}
               className="bg-red-500 text-white px-3 py-1 rounded"
             >
-              Delete
+              <FaTrash />
             </button>
           </div>
         </div>
