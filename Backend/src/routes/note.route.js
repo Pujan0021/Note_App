@@ -12,9 +12,7 @@ router.post("/add", authMiddleware, async (req, res) => {
         await newNote.save();
         return res.status(200).json({
             success: true,
-            user: {
-                name: req.user.name,
-            },
+            note: newNote,
             message: "Note created Successfully"
         });
     } catch (error) {
@@ -48,4 +46,30 @@ router.delete("/delete/:id", authMiddleware, async (req, res) => {
         return res.status(500).json({ success: false, messsage: "Cannot Update Note" })
     }
 })
+router.get("/auth/check", authMiddleware, (req, res) => {
+    if (!req.user) {
+        return res.status(401).json({ authenticated: false, message: "Not authenticated" });
+    }
+
+    try {
+        return res.status(200).json({
+            authenticated: true,
+            user: {
+                id: req.user.id,
+                name: req.user.name,
+            },
+        });
+    } catch (error) {
+        return res.status(500).json({ authenticated: false, message: "Auth check failed" });
+    }
+});
+router.post("/logout", (req, res) => {
+    res.clearCookie("token", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+    });
+    res.status(200).json({ message: "Logged out successfully" });
+});
 module.exports = router;
+
