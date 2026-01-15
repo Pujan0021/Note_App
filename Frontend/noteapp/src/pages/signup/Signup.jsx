@@ -13,7 +13,8 @@ const Signup = () => {
     try {
       const response = await axios.post(
         "https://note-app-backend-0tm0.onrender.com/api/auth/register",
-        { name, email, password }
+        { name, email, password },
+        { withCredentials: true }
       );
       console.log(response);
       if (response.data.success) {
