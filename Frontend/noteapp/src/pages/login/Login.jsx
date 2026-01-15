@@ -12,7 +12,7 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/login",
+        "https://note-app-backend-0tm0.onrender.com/api/auth/login",
         { email, password },
         { withCredentials: true }
       );

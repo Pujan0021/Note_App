@@ -16,7 +16,7 @@ const Home = () => {
   const checkAuth = async () => {
     try {
       const { data } = await axios.get(
-        "http://localhost:3000/api/note/auth/check",
+        "https://note-app-backend-0tm0.onrender.com/api/note/auth/check",
         { withCredentials: true }
       );
 
@@ -32,9 +32,12 @@ const Home = () => {
 
   const fetchNotes = async () => {
     try {
-      const { data } = await axios.get("http://localhost:3000/api/note/notes", {
-        withCredentials: true,
-      });
+      const { data } = await axios.get(
+        "https://note-app-backend-0tm0.onrender.com/api/note/notes",
+        {
+          withCredentials: true,
+        }
+      );
       setNotes(data.notes || []);
     } catch (error) {
       console.error("Error fetching notes:", error);
@@ -45,7 +48,7 @@ const Home = () => {
   const addNote = async (title, description) => {
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/api/note/add",
+        "https://note-app-backend-0tm0.onrender.com/api/note/add",
         { title, description },
         { withCredentials: true }
       );
@@ -64,7 +67,7 @@ const Home = () => {
   const onUpdate = async (updatedNote) => {
     try {
       const { data } = await axios.put(
-        `http://localhost:3000/api/note/update/${updatedNote._id}`,
+        `https://note-app-backend-0tm0.onrender.com/api/note/update/${updatedNote._id}`,
         { title: updatedNote.title, description: updatedNote.description },
         { withCredentials: true }
       );
@@ -86,7 +89,7 @@ const Home = () => {
   const onDelete = async (id) => {
     try {
       const { data } = await axios.delete(
-        `http://localhost:3000/api/note/delete/${id}`,
+        `https://note-app-backend-0tm0.onrender.com/api/note/delete/${id}`,
         { withCredentials: true }
       );
 

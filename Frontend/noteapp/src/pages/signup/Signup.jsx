@@ -12,7 +12,7 @@ const Signup = () => {
     e.preventDefault();
     try {
       const response = await axios.post(
-        "http://localhost:3000/api/auth/register",
+        "https://note-app-backend-0tm0.onrender.com/api/auth/register",
         { name, email, password }
       );
       console.log(response);
