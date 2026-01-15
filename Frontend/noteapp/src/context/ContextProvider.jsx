@@ -16,7 +16,7 @@ const ContextProvider = ({ children }) => {
   const logOut = async () => {
     try {
       const { data } = await axios.post(
-        "http://localhost:3000/api/note/logout",
+        "https://note-app-backend-0tm0.onrender.com/api/note/logout",
         {},
         { withCredentials: true }
       );
