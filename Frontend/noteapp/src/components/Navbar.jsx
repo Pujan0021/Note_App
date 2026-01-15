@@ -14,7 +14,6 @@ const Navbar = ({ query, setQuery }) => {
             <span className=" md:text-2xl font-bold text-white">Note_Loop</span>
           </div>
 
-          {/* Middle - Search bar */}
           <div className="flex-1 flex items-center justify-center px-2">
             <div className="w-full max-w-lg">
               <input
@@ -22,7 +21,8 @@ const Navbar = ({ query, setQuery }) => {
                 value={query}
                 placeholder="Search..."
                 onChange={(e) => setQuery(e.target.value)}
-                className=" w-full md:w-80 px-2 py-2 
+                className=" w-full md:w-80 
+                p-0.5 md:px-1.5 md:py-1.5 
                 bg-white
                 rounded-md border border-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
