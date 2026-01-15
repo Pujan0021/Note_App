@@ -58,7 +58,7 @@ const Navbar = ({ query, setQuery }) => {
                 >
                   <button
                     onClick={logOut}
-                    className="bg-amber-700 p-1.5 rounded-sm w-25 text-white cursor-pointer "
+                    className="bg-amber-700 p-1.5 rounded-sm md:w-25 text-white cursor-pointer "
                   >
                     Logout
                   </button>
