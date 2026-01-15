@@ -7,8 +7,11 @@ const noteRouter = require("./src/routes/note.route");
 const connectToMongoDB = require("./src/config/db");
 require("dotenv").config();
 const PORT = process.env.PORT || 3000;
-// const cors = require("cors");
-app.use(cors({ origin: "https://note-app-backend-0tm0.onrender.com", credentials: true }));
+app.use(cors({
+    origin: "https://note-app-frontend-vewt.onrender.com", // <-- frontend domain
+    credentials: true
+}));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser())
