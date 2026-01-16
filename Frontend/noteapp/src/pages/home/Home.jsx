@@ -12,7 +12,7 @@ const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [notes, setNotes] = useState([]);
   const [query, setQuery] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [addButton, setAddButton] = useState(false);
   const { isAuthenticated } = useAuth(); // consume from context
 
