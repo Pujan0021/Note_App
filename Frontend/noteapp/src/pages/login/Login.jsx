@@ -2,14 +2,18 @@ import axios from "axios";
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/ContextProvider";
+import Loading from "../../components/Loading";
 import toast from "react-hot-toast";
 const Login = () => {
   const { logIn } = useAuth();
   const navigate = useNavigate();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
       const response = await axios.post(
         "https://note-app-backend-0tm0.onrender.com/api/auth/login",
@@ -26,9 +30,13 @@ const Login = () => {
     } catch (error) {
       console.log("LogIn Failed !", error.message);
       toast.error("Incorrect Login Credentials");
+    } finally {
+      setLoading(false);
     }
   };
-  return (
+  return loading ? (
+    <Loading />
+  ) : (
     <div className="flex justify-center items-center min-h-screen ">
       <div className="p-5 rounded-[5px] border border-gray-200 bg-white shadow-sm w-80 ">
         <form className="p-2" onSubmit={handleSubmit}>

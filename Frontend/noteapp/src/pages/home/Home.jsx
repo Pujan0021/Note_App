@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/Navbar";
 import NoteModal from "../../components/NoteModel";
 import NoteCard from "../../components/NoteCard";
+import Loading from "../../components/Loading";
 import axios from "axios";
 import { useAuth } from "../../context/ContextProvider";
 import { Link } from "react-router-dom";
@@ -11,6 +12,7 @@ const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [notes, setNotes] = useState([]);
   const [query, setQuery] = useState("");
+  const [loading, setLoading] = useState(true);
   const { isAuthenticated } = useAuth(); // consume from context
 
   const checkAuth = async () => {
@@ -31,6 +33,7 @@ const Home = () => {
   };
 
   const fetchNotes = async () => {
+    setLoading(true);
     try {
       const { data } = await axios.get(
         "https://note-app-backend-0tm0.onrender.com/api/note/notes",
@@ -42,10 +45,13 @@ const Home = () => {
     } catch (error) {
       console.error("Error fetching notes:", error);
       toast.error("Error Fetching Notes!");
+    } finally {
+      setLoading(false);
     }
   };
 
   const addNote = async (title, description) => {
+    setLoading(true);
     try {
       const { data } = await axios.post(
         "https://note-app-backend-0tm0.onrender.com/api/note/add",
@@ -61,10 +67,13 @@ const Home = () => {
     } catch (error) {
       console.error("Error adding note:", error);
       toast.error("Error adding note!", error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
   const onUpdate = async (updatedNote) => {
+    setLoading(true);
     try {
       const { data } = await axios.put(
         `https://note-app-backend-0tm0.onrender.com/api/note/update/${updatedNote._id}`,
@@ -82,11 +91,14 @@ const Home = () => {
       }
     } catch (error) {
       console.error("Error updating note:", error);
-      toast.error("Error updating note!", error.message);
+      toast.error("Error updating note!");
+    } finally {
+      setLoading(false);
     }
   };
 
   const onDelete = async (id) => {
+    setLoading(true);
     try {
       const { data } = await axios.delete(
         `https://note-app-backend-0tm0.onrender.com/api/note/delete/${id}`,
@@ -100,6 +112,8 @@ const Home = () => {
     } catch (error) {
       console.error("Error deleting note:", error);
       toast.error("Error deleting note!", error.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -123,33 +137,20 @@ const Home = () => {
     <>
       <Navbar query={query} setQuery={setQuery} />
 
-      {isAuthenticated ? (
+      {loading ? (
+        <Loading />
+      ) : isAuthenticated ? (
         filteredNotes.length === 0 ? (
-          <div className="flex flex-col items-center justify-center mt-40">
-            <div className="bg-gray-50 border border-gray-200 rounded-xl p-10 shadow-sm text-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-16 w-20 text-gray-400 mx-auto mb-4"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 12h6m2 0a9 9 0 11-18 0 9 9 0 0118 0z"
-                />
-              </svg>
-              <h2 className="text-2xl font-semibold text-gray-700">
-                No notes yet
-              </h2>
+          <div className="flex  items-center justify-center mt-40  ">
+            <div className="bg-gray-50 border w-80 border-gray-200 rounded-xl p-10 shadow-sm text-center">
+              {/* Empty state */}
+              <h2 className="text-2xl font-semibold text-gray-700">No notes</h2>
               <p className="text-gray-500 mt-2">
-                Start by adding your first note to keep track of ideas.
+                Start by adding your note to keep track of ideas.
               </p>
               <button
                 onClick={() => setIsModalOpen(true)}
-                className="mt-6 px-6 py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition"
+                className="mt-6 px-6 py-3 bg-blue-600 cursor-pointer text-white rounded-lg shadow hover:bg-blue-700 transition"
               >
                 + Add Note
               </button>
@@ -168,33 +169,16 @@ const Home = () => {
           </div>
         )
       ) : (
-        <div className="flex  flex-col items-center justify-center mt-40">
+        <div className="flex flex-col items-center justify-center mt-40">
           <div className="bg-gray-50 border border-gray-200 rounded-xl p-10 shadow-sm text-center w-80">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-20 w-16 text-gray-400 mx-auto mb-4"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M12 11c0-1.104-.896-2-2-2s-2 .896-2 2 .896 2 2 2 2-.896 2-2zm0 0v1m0-4a9 9 0 110 18 9 9 0 010-18z"
-              />
-            </svg>
             <h2 className="text-2xl font-semibold text-gray-700">
               Please log in
             </h2>
             <p className="text-gray-500 mt-2">
               You need to be authenticated to view and manage your notes.
             </p>
-            <Link
-              to="/login"
-              className="text-white hover:text-blue-300 transition-transform hover:scale-105"
-            >
-              <button className="mt-6 px-6 cursor-pointer py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition ">
+            <Link to="/login">
+              <button className="mt-6 px-6 cursor-pointer py-3 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition">
                 Login
               </button>
             </Link>
@@ -205,7 +189,7 @@ const Home = () => {
       {isAuthenticated && (
         <button
           onClick={() => setIsModalOpen(true)}
-          className="fixed right-10 bottom-10 bg-gray-100 px-5 py-5 rounded-full text-4xl shadow-lg"
+          className="fixed right-10 bottom-10 cursor-pointer bg-gray-100 px-5 py-5 rounded-full text-4xl shadow-lg"
         >
           +
         </button>
@@ -213,10 +197,10 @@ const Home = () => {
 
       {isModalOpen && (
         <div
-          className="fixed inset-0 flex items-center justify-center  bg-opacity-50 backdrop-blur-sm z-50"
+          className="fixed inset-0 flex items-center justify-center bg-opacity-50 backdrop-blur-sm z-50"
           onClick={closeModal}
         >
-          <div className=" p-6" onClick={(e) => e.stopPropagation()}>
+          <div className="p-6" onClick={(e) => e.stopPropagation()}>
             <NoteModal closeModal={closeModal} addNote={addNote} />
           </div>
         </div>
@@ -224,5 +208,4 @@ const Home = () => {
     </>
   );
 };
-
 export default Home;

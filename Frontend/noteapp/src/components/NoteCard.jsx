@@ -29,13 +29,13 @@ const NoteCard = ({ note, onUpdate, onDelete }) => {
           <div className="flex gap-2">
             <button
               onClick={handleSave}
-              className="bg-green-500 text-white px-3 py-1 rounded"
+              className="bg-green-500 text-white cursor-pointer px-3 py-1 rounded"
             >
               Save
             </button>
             <button
               onClick={() => setIsEditing(false)}
-              className="bg-gray-400 text-white px-3 py-1 rounded"
+              className="bg-gray-400 cursor-pointer text-white px-3 py-1 rounded"
             >
               Cancel
             </button>
@@ -48,13 +48,13 @@ const NoteCard = ({ note, onUpdate, onDelete }) => {
           <div className="flex gap-2">
             <button
               onClick={() => setIsEditing(true)}
-              className="bg-blue-500 text-white px-3 py-1 rounded"
+              className="bg-blue-500 text-white cursor-pointer px-3 py-1 rounded"
             >
               <FaEdit />
             </button>
             <button
               onClick={() => onDelete(note._id)}
-              className="bg-red-500 text-white px-3 py-1 rounded"
+              className="bg-red-500 cursor-pointer text-white px-3 py-1 rounded"
             >
               <FaTrash />
             </button>
