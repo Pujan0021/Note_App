@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const NoteModal = ({ closeModal, addNote }) => {
+const NoteModal = ({ closeModal, addNote, addButton }) => {
   const [title, setTitle] = useState(null);
   const [description, setDescription] = useState(null);
 
@@ -55,7 +55,8 @@ const NoteModal = ({ closeModal, addNote }) => {
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-indigo-600 cursor-pointer text-white rounded-md hover:bg-indigo-700"
+            disabled={addButton}
+            className="px-4 py-2 disabled:opacity-50 bg-indigo-600 cursor-pointer text-white rounded-md hover:bg-indigo-700"
           >
             Add Note
           </button>

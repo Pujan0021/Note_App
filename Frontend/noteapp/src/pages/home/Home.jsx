@@ -13,6 +13,7 @@ const Home = () => {
   const [notes, setNotes] = useState([]);
   const [query, setQuery] = useState("");
   const [loading, setLoading] = useState(true);
+  const [addButton, setAddButton] = useState(false);
   const { isAuthenticated } = useAuth(); // consume from context
 
   const checkAuth = async () => {
@@ -51,6 +52,7 @@ const Home = () => {
   };
 
   const addNote = async (title, description) => {
+    setAddButton(true);
     setLoading(true);
     try {
       const { data } = await axios.post(
@@ -69,6 +71,7 @@ const Home = () => {
       toast.error("Error adding note!", error.message);
     } finally {
       setLoading(false);
+      setAddButton(false);
     }
   };
 
@@ -189,6 +192,7 @@ const Home = () => {
       {isAuthenticated && (
         <button
           onClick={() => setIsModalOpen(true)}
+          disabled={addButton}
           className="fixed right-10 bottom-10 cursor-pointer bg-gray-100 px-5 py-5 rounded-full text-4xl shadow-lg"
         >
           +
@@ -201,7 +205,11 @@ const Home = () => {
           onClick={closeModal}
         >
           <div className="p-6" onClick={(e) => e.stopPropagation()}>
-            <NoteModal closeModal={closeModal} addNote={addNote} />
+            <NoteModal
+              closeModal={closeModal}
+              addButton={addButton}
+              addNote={addNote}
+            />
           </div>
         </div>
       )}
